@@ -1,0 +1,84 @@
+﻿@model Salary
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+<link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Create new salary</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Salary</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    @if (TempData["pesan"] != null)
+                    {
+                        <script type="text/javascript">
+                            window.onload = function () {
+                                swal("Good !", '@TempData["pesan"]', "success");
+                            };
+                        </script>
+                    }
+                    <!-- form start -->
+                    <form asp-controller="Salary" asp-action="Save" method="post">
+                        <div class="card-body">
+                             <input type="hidden" name="Id" value="@Model.Id" />
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <label for="exampleInputEmail1">Base Salary:</label>
+                                    <input type="number" min="1" name="BaseSalary" asp-for=BaseSalary class="form-control" value="@Model.BaseSalary" />
+                                    <span asp-validation-for="BaseSalary" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+
+                                    <label for="exampleInputEmail1">Bonuses:</label>
+                                    <input type="number" name="Bonuses" asp-for=Bonuses class="form-control" value="@Model.Bonuses" />
+                                    <span asp-validation-for="Bonuses" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+
+                                    <label for="exampleInputEmail1">Deductions:</label>
+                                    <input type="number" name="Deductions" asp-for=Deductions class="form-control" value="@Model.Deductions" />
+                                    <span asp-validation-for="Deductions" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+
+                                    <label for="exampleInputEmail1">Select Employee:</label>
+                                    <select class="form-control" asp-for="EmployeeId" name="EmployeeId" asp-items="@ViewBag.employees"></select>
+                                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary" onclick="return Submit()">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/js/jquery.toaster.js"></script>

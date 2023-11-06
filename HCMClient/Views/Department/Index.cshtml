@@ -1,0 +1,79 @@
+﻿@model List<Department>;
+@{
+    ViewData["Title"] = "All Departments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Departments List</h3>
+                        <a class="float-right btn btn-warning" asp-action="Save" asp-controller="Department">Create new department</a>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Department Name</th>
+                                    <th>Create On</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count() > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.Id
+                                            </td>
+                                            <td> @item.Name</td>
+                                            <td>@item.Created.ToShortDateString()</td>
+                                            <td>
+                                                <a asp-action="Save" asp-controller="Department" asp-route-Id="@item.Id" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                                                <a asp-action="Delete" asp-controller="Department" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="7">No record found.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Page specific script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "responsive": true,
+        });
+    });
+</script>

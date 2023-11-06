@@ -1,0 +1,83 @@
+﻿@model Employee
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+<link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Create new employee</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Employee</h3>
+                    </div>
+                    <!-- form start -->
+                    <form asp-controller="Employee" asp-action="Save" method="post">
+                        <div class="card-body">
+                             <input type="hidden" name="Id" value="@Model.Id" />
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <label for="exampleInputEmail1">First Name:</label>
+                                    <input type="text" name="FirstName" asp-for=FirstName class="form-control" value="@Model.FirstName"/>
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+
+                                    <label for="exampleInputEmail1">Last Name:</label>
+                                    <input type="text" name="LastName" asp-for=LastName class="form-control" value="@Model.LastName"/>
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label for="exampleInputEmail1">Email:</label>
+                                    <input type="email" name="Email" class="form-control" asp-for=Email value="@Model.Email"/>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label for="exampleInputEmail1">Date of birth:</label>
+                                    <input type="date" name="DOB" class="form-control" asp-for=DOB value="@Model.DOB"/>
+                                    <span asp-validation-for="DOB" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label for="exampleInputEmail1">Date of Join:</label>
+                                    <input type="date" name="DateOfJoin" class="form-control" asp-for=DateOfJoin value="@Model.DateOfJoin"/>
+                                    <span asp-validation-for="DateOfJoin" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label for="exampleInputEmail1">Select Department:</label>
+                                    <select class="form-control" asp-for="DepartmentId" name="DepartmentId" asp-items="@ViewBag.departments"></select>
+                                    <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary" onclick="return Submit()">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/js/jquery.toaster.js"></script>

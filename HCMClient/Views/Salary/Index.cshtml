@@ -1,0 +1,198 @@
+﻿@model List<Salary>;
+@{
+    ViewData["Title"] = "All Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Salaries List</h3>
+                        <a class="float-right btn btn-warning" asp-action="Save" asp-controller="Salary">Add Salary</a>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Base Salary</th>
+                                    <th>Bonuses</th>
+                                    <th>Deductions</th>
+                                    <th>TotalSalary</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count() > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.Id
+                                            </td>
+                                            <td>@item.BaseSalary</td>
+                                            <td>@item.Bonuses</td>
+                                            <td>@item.Deductions</td>
+                                            <td>@item.TotalSalary</td>
+                                            <td>
+                                                <a asp-action="Save" asp-controller="Salary" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-edit"></i></a>
+                                                <a asp-action="Delete" asp-controller="Salary" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="7">No record found.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Page specific script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "responsive": true,
+        });
+    });
+</script>
+
+<script>
+    function DeleteProducts() {
+        debugger
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover any product!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel plx!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                debugger;
+                if (isConfirm) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/DeleteAllProducts",
+                        dataType: "json",
+                        success: function (data) {
+                            swal("Deleted!", "Products have been removed successfully.", "success");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        },
+                        error: function () {
+                            swal("Error", "Something went wrong.", "error");
+                        }
+                    });
+
+                } else {
+                    swal("Cancelled", "Your file is safe :)", "error");
+                }
+            });
+    }
+    function DeleteUser(Id) {
+        debugger
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel plx!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                debugger;
+                if (isConfirm) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/RemoveProduct",
+                        data: { guid: Id },
+                        dataType: "json",
+                        success: function (data) {
+                            swal("Deleted!", "Your file has been deleted.", "success");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        },
+                        error: function () {
+                            swal("Error", "Something went wrong.", "error");
+                        }
+                    });
+
+                } else {
+                    swal("Cancelled", "Your file is safe :)", "error");
+                }
+            });
+    }
+    function OnChangeImageUploader(Id) {
+        debugger;
+        var formData = new FormData();
+        var a = $("#imageFile" + Id);
+        var fileInput = $("#imageFile" + Id)[0].files[0];
+        formData.append("file", $("#imageFile" + Id)[0].files[0]);
+        formData.append("Id", Id);
+        if (fileInput.type.match("jpg|jpeg|png|ico|bmp") == null) {
+            swal("Upload Image!", "Please upload a valid image.", "warning");
+            return false;
+        }
+        if (fileInput == undefined || fileInput == '') {
+            swal("Upload Image!", "Please select an image.", "warning");
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Admin/UploadImage",
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (data) {
+                swal("Saved!", "Image uploaded successfully.", "success");
+                setTimeout(function () {
+                    location.href = '/Admin/ProductsList';
+                }, 3000);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                $("#result").html("Error uploading image.");
+            },
+        });
+    }
+    $("document").ready(function () {
+        $(".imageFile").change(function () {
+            debugger;
+            OnChangeImageUploader(14);
+        });
+    });
+</script>
