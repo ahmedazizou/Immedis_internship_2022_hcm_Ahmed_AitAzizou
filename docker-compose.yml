@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  humancapitalmanagementapi:
+    image: humancapitalmanagementapi
+    build:
+      context: .
+      dockerfile: HumanCapitalManagementAPI/Dockerfile
+    ports:
+      - "50187:50187"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      - db
+
+  hcmclient:
+    image: hcmclient
+    build:
+      context: .
+      dockerfile: HCMClient/Dockerfile
+    ports:
+      - "37360:37360"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      MSSQL_SA_PASSWORD: "YourStrong(!)Password"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
