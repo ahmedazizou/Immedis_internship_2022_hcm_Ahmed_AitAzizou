@@ -2,6 +2,7 @@
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace HCMClient.Controllers
@@ -11,7 +12,7 @@ namespace HCMClient.Controllers
         private readonly DataContext db;
         public DepartmentController(DataContext dataContext)
         {
-            db=dataContext;
+            db = dataContext;
         }
         public IActionResult Index()
         {
@@ -32,17 +33,30 @@ namespace HCMClient.Controllers
         {
             if (ModelState.IsValid)
             {
-                department.UserId = HttpContext.Session.GetInt32("UserId")??0;
-                if (department.Id > 0)
+                try
                 {
-                    db.Departments.Update(department);
+                    department.UserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+                    if (department.Id > 0)
+                    {
+                        db.Departments.Update(department);
+                        TempData["SuccessMessage"] = "Department updated successfully.";
+                    }
+                    else
+                    {
+                        db.Departments.Add(department);
+                        TempData["SuccessMessage"] = "Department added successfully.";
+                    }
                     db.SaveChanges();
                 }
-                else
+                catch (Exception ex)
                 {
-                    db.Departments.Add(department);
-                    db.SaveChanges();
+                    // Log the exception...
+                    TempData["ErrorMessage"] = "Error saving department: " + ex.Message;
                 }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Validation failed. Please check the input fields.";
             }
             return RedirectToAction("Index");
         }
@@ -50,11 +64,24 @@ namespace HCMClient.Controllers
         {
             if (Id > 0)
             {
-                var user = db.Departments.Find(Id);
-                if (user != null)
+                var dept = db.Departments.Find(Id);
+                if (dept != null)
                 {
-                    db.Departments.Remove(user);
-                    db.SaveChanges();
+                    try
+                    {
+                        db.Departments.Remove(dept);
+                        db.SaveChanges();
+                        TempData["SuccessMessage"] = "Department deleted successfully.";
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception...
+                        TempData["ErrorMessage"] = "Error deleting department: " + ex.Message;
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Department not found.";
                 }
             }
             return RedirectToAction("Index");

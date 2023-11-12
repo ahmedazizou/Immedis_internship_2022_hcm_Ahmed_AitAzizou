@@ -8,8 +8,17 @@ services:
       dockerfile: HumanCapitalManagementAPI/Dockerfile
     ports:
       - "50187:50187"
+      - "44308:443"
+    volumes:
+      - ./certs:/https
+
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=123ABCabc
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=HCM_db;User Id=sa;Password=YourStrong(!)Password
+      - Jwt__Issuer=https://humancapitalmanagementapi:443/ # Use HTTPS and the external port
+      - Jwt__Audience=https://humancapitalmanagementapi:443/ # Use HTTPS and the external port
     depends_on:
       - db
 
@@ -20,15 +29,23 @@ services:
       dockerfile: HCMClient/Dockerfile
     ports:
       - "37360:37360"
+      - "44309:443"
+    volumes:
+      - ./certs:/https
+
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=123ABCabc
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_ENVIRONMENT=Development
+      - APIURL=http://humancapitalmanagementapi:443/api/
     depends_on:
       - db
+      - humancapitalmanagementapi
 
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
-      MSSQL_SA_PASSWORD: "YourStrong(!)Password"
-      ACCEPT_EULA: "Y"
+      - MSSQL_SA_PASSWORD=YourStrong(!)Password
+      - ACCEPT_EULA=Y
     ports:
       - "1433:1433"

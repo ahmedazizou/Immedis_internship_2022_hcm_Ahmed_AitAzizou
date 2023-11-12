@@ -1,4 +1,4 @@
-﻿@model Salary
+@model Salary
 @if (TempData["SuccessMessage"] != null)
 {
                 <script>
@@ -48,15 +48,16 @@
                     <!-- /.card-header -->
                     @if (TempData["pesan"] != null)
                     {
-                                                    <script type="text/javascript">
-                                                        window.onload = function () {
-                                                            swal("Good !", '@TempData["pesan"]', "success");
-                                                        };
-                                                    </script>
+                                                                        <script type="text/javascript">
+                                                                            window.onload = function () {
+                                                                                swal("Good !", '@TempData["pesan"]', "success");
+                                                                            };
+                                                                        </script>
                     }
                     <!-- form start -->
                     <form asp-controller="Salary" asp-action="Save" method="post">
                         <div class="card-body">
+                            <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
                              <input type="hidden" name="Id" value="@Model.Id" />
                             <div class="row">
                                 <div class="col-12">
@@ -77,10 +78,7 @@
                                     <span asp-validation-for="Deductions" class="text-danger"></span>
                                 </div>
                                 <div class="col-12">
-
-                                    <label for="exampleInputEmail1">Select Employee:</label>
-                                    <select class="form-control" asp-for="EmployeeId" name="EmployeeId" asp-items="@ViewBag.employees"></select>
-                                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                                <input type="hidden" name="EmployeeId" value="@Model.EmployeeId" />
                                 </div>
 
                                 <div class="col-12">

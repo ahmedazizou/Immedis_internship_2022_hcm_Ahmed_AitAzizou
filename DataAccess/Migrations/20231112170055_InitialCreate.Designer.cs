@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231031174029_creds")]
-    partial class creds
+    [Migration("20231112170055_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,14 +93,29 @@ namespace DataAccess.Migrations
                     b.Property<decimal>("Bonuses")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("Deductions")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("TotalSalary")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -138,8 +153,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 10, 31, 22, 40, 29, 292, DateTimeKind.Local).AddTicks(4857),
-                            Password = "$2a$13$c5QkgL3feskj8IUIOoNHyu0AIcWU1BW.BMLP1rbLlgYvAyQhh3bp.",
+                            Created = new DateTime(2023, 11, 12, 18, 0, 54, 866, DateTimeKind.Local).AddTicks(7681),
+                            Password = "$2a$13$mSkTGDOFtuUk6I9ljJiRpe6UjqINCFhvuEwRefHZhYTt/q8uUZZ1G",
                             Role = "Admin",
                             Username = "Admin"
                         });

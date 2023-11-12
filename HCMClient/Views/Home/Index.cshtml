@@ -1,6 +1,22 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@if (TempData["ErrorMessage"] != null)
+{
+                <script>
+                    $(document).ready(function() {
+                        toastr.error('@TempData["ErrorMessage"]');
+                    });
+                </script>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+            <script>
+                $(document).ready(function() {
+                    toastr.success('@TempData["SuccessMessage"]');
+                });
+            </script>
+}
 <section class="content">
     <div class="container-fluid">
         <div class="row">

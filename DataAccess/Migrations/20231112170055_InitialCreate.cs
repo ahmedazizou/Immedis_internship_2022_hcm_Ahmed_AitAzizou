@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
-                    Role = table.Column<string>(nullable: false),
+                    Role = table.Column<string>(nullable: true),
                     Created = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -78,7 +78,12 @@ namespace DataAccess.Migrations
                     Bonuses = table.Column<decimal>(nullable: false),
                     Deductions = table.Column<decimal>(nullable: false),
                     TotalSalary = table.Column<decimal>(nullable: false),
-                    EmployeeId = table.Column<int>(nullable: false)
+                    EmployeeId = table.Column<int>(nullable: false),
+                    Month = table.Column<int>(nullable: false),
+                    Year = table.Column<int>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: true),
+                    Notes = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,6 +95,11 @@ namespace DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Created", "Password", "Role", "Username" },
+                values: new object[] { 1, new DateTime(2023, 11, 12, 18, 0, 54, 866, DateTimeKind.Local).AddTicks(7681), "$2a$13$mSkTGDOFtuUk6I9ljJiRpe6UjqINCFhvuEwRefHZhYTt/q8uUZZ1G", "Admin", "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Departments_UserId",

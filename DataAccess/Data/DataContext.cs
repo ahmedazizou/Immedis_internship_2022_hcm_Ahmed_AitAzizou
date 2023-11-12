@@ -7,7 +7,7 @@ using BCrypt;
 
 namespace DataAccess.Data
 {
-    public class DataContext:DbContext
+    public class DataContext : DbContext
     {
         public DataContext()
         {
@@ -31,14 +31,24 @@ namespace DataAccess.Data
                     Id = 1,
                     Username = "Admin",
                     Password = BCrypt.Net.BCrypt.EnhancedHashPassword("12345", 13),
-            Created =DateTime.Now,
-                    Role="Admin"
+                    Created = DateTime.Now,
+                    Role = "Admin"
                 }
             );
+
+            modelBuilder.Entity<Salary>(entity =>
+                 {
+                     entity.Property(e => e.BaseSalary).HasColumnType("decimal(18, 2)");
+                     entity.Property(e => e.Bonuses).HasColumnType("decimal(18, 2)");
+                     entity.Property(e => e.Deductions).HasColumnType("decimal(18, 2)");
+                     entity.Property(e => e.TotalSalary).HasColumnType("decimal(18, 2)");
+                 });
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Salary> Salaries { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
+
+
     }
 }

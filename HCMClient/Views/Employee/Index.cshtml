@@ -2,6 +2,24 @@
 @{
     ViewData["Title"] = "All Employees";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+                <script>
+                    $(document).ready(function() {
+                        toastr.success('@TempData["SuccessMessage"]');
+                    });
+                </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+                <script>
+                    $(document).ready(function() {
+                        toastr.error('@TempData["ErrorMessage"]');
+                    });
+                </script>
+}
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -29,26 +47,26 @@
                                 {
                                     foreach (var item in Model)
                                     {
-                                        <tr>
-                                            <td>
+                                                        <tr>
+                                                            <td>
                                                 @item.Id
-                                            </td>
-                                            <td> @item.FirstName @item.LastName</td>
-                                            <td>@item.Email</td>
-                                            <td>@item.DOB</td>
-                                            <td>
-                                                <a asp-action="Details" asp-controller="Employee" asp-route-Id="@item.Id" class="btn btn-info"><i class="fa fa-eye"></i></a>
-                                                <a asp-action="Save" asp-controller="Employee" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-edit"></i></a>
-                                                <a asp-action="Delete" asp-controller="Employee" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                                </td>
-                                        </tr>
+                                                            </td>
+                                                            <td> @item.FirstName @item.LastName</td>
+                                                            <td>@item.Email</td>
+                                                            <td>@item.DOB</td>
+                                                            <td>
+                                                                <a asp-action="Details" asp-controller="Employee" asp-route-Id="@item.Id" class="btn btn-info"><i class="fa fa-eye"></i></a>
+                                                                <a asp-action="Save" asp-controller="Employee" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-edit"></i></a>
+                                                                <a asp-action="Delete" asp-controller="Employee" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                                </td>
+                                                        </tr>
                                     }
                                 }
                                 else
                                 {
-                                    <tr>
-                                        <td colspan="7">No record found.</td>
-                                    </tr>
+                                            <tr>
+                                                <td colspan="7">No record found.</td>
+                                            </tr>
                                 }
                             </tbody>
                         </table>

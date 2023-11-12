@@ -20,10 +20,10 @@ namespace HCMClient.Controllers
     {
         private readonly DataContext db;
         private readonly Microsoft.Extensions.Configuration.IConfiguration config;
-        public SalaryController(DataContext dataContext,Microsoft.Extensions.Configuration.IConfiguration config)
+        public SalaryController(DataContext dataContext, Microsoft.Extensions.Configuration.IConfiguration config)
         {
-            db=dataContext;
-            this.config=config;
+            db = dataContext;
+            this.config = config;
         }
         public async Task<IActionResult> Index()
         {
@@ -62,38 +62,76 @@ namespace HCMClient.Controllers
             return View(salary);
         }
         [HttpPost]
-        public async Task<IActionResult> Save(Salary salary)
+        [HttpPost]
+        public async Task<IActionResult> Save(Salary salary, string returnUrl = "")
         {
             if (ModelState.IsValid)
             {
-                if (salary.Id > 0)
+                using (HttpClient client = new HttpClient())
                 {
-                    using (HttpClient client = new HttpClient())
+                    client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
+                    client.DefaultRequestHeaders.Authorization
+                                 = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+                    var json = JsonSerializer.Serialize(salary);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response;
+
+                    // Check if we're adding or updating
+                    if (salary.Id > 0)
                     {
-                        client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
-                        client.DefaultRequestHeaders.Authorization
-                                     = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-                        var json = JsonSerializer.Serialize(salary);
-                        var content = new StringContent(json, Encoding.UTF8, @"application/json");
-                        var response = await client.PostAsync("api/Salaries/EditSalary", content);
+                        // Update existing salary (PUT)
+                        response = await client.PutAsync($"api/Salaries/{salary.Id}", content);
+                    }
+                    else
+                    {
+                        // Create new salary (POST)
+                        response = await client.PostAsync("api/Salaries", content);
+                    }
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        TempData["SuccessMessage"] = "Salary saved successfully.";
+                        // If returnUrl is provided and valid, redirect back to it
+                        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            // Otherwise, redirect to the index page of salaries
+                            return RedirectToAction("Index");
+                        }
+                    }
+                    else
+                    {
+                        // Failure
+                        TempData["ErrorMessage"] = "Error occurred. Status code: " + response.StatusCode;
                     }
                 }
-                else
-                {
-                    using (HttpClient client = new HttpClient())
-                    {
-                        client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
-                        client.DefaultRequestHeaders.Authorization
-                                     = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-                        var json = JsonSerializer.Serialize(salary);
-                        var content = new StringContent(json, Encoding.UTF8, @"application/json");
-                        var response = await client.PutAsync("api/Salaries", content);
-                    }
-                }
-                return RedirectToAction("Index");
             }
-            ViewBag.employees = db.Employees.Select(x => new SelectListItem { Text = x.FirstName + " " + x.LastName, Value = x.Id.ToString(), Selected = x.Id == salary.EmployeeId }).ToList();
+
+            // If we get to this point, something went wrong
+            ViewBag.employees = db.Employees.Select(x => new SelectListItem
+            {
+                Text = x.FirstName + " " + x.LastName,
+                Value = x.Id.ToString(),
+                Selected = x.Id == salary.EmployeeId
+            }).ToList();
+            TempData["ErrorMessage"] = "Please correct the errors on the form.";
             return View(salary);
+        }
+
+        public IActionResult AddSalaryForEmployee(int employeeId)
+        {
+            var salary = new Salary
+            {
+                EmployeeId = employeeId
+            };
+
+            // Set the returnUrl for the view to redirect after saving
+            ViewData["ReturnUrl"] = Url.Action("Details", "Employee", new { id = employeeId });
+
+            return View("AddSalaryForEmployee", salary);
         }
         public async Task<IActionResult> Delete(int Id)
         {
@@ -109,6 +147,15 @@ namespace HCMClient.Controllers
                     client.DefaultRequestHeaders.Authorization
                                  = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
                     var response = await client.DeleteAsync($"api/Salaries/{Id}");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        TempData["SuccessMessage"] = "Salary deleted successfully.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Error occurred. Status code: " + response.StatusCode;
+                    }
                 }
             }
             return RedirectToAction("Index");

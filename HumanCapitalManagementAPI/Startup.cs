@@ -42,8 +42,10 @@ namespace HumanCapitalManagementAPI
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Jwt:SecretKey").Value));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuerSigningKey=true, ValidateAudience=false, ValidateIssuer=false,
-                IssuerSigningKey= securityKey
+                ValidateIssuerSigningKey = true,
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                IssuerSigningKey = securityKey
             });
             services.AddAuthorization(config =>
             {

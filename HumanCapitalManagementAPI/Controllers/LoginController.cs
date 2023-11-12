@@ -24,9 +24,9 @@ namespace HumanCapitalManagementAPI.Controllers
     {
         private readonly IConfiguration _config;
         private readonly DataContext db;
-        public LoginController(IConfiguration config,DataContext dataContext)
+        public LoginController(IConfiguration config, DataContext dataContext)
         {
-            _config = config;db = dataContext;
+            _config = config; db = dataContext;
         }
         [HttpPost]
         [AllowAnonymous]
@@ -37,14 +37,15 @@ namespace HumanCapitalManagementAPI.Controllers
             if (user != null)
             {
                 var tokenString = GenerateJWTToken(user);
-                user.token= tokenString;
-                var result = new User() { 
-                Id= user.Id,
-                Role= user.Role,
-                Username=user.Username,
-                Password=user.Password,
-                Created=user.Created,
-                token=tokenString
+                user.token = tokenString;
+                var result = new User()
+                {
+                    Id = user.Id,
+                    Role = user.Role,
+                    Username = user.Username,
+                    Password = user.Password,
+                    Created = user.Created,
+                    token = tokenString
                 };
                 response = Ok(new { data = result });
             }
@@ -56,7 +57,8 @@ namespace HumanCapitalManagementAPI.Controllers
             if (user != null)
             {
                 bool temp = BCrypt.Net.BCrypt.EnhancedVerify(loginCredentials.Password, user.Password);
-                if (temp) {
+                if (temp)
+                {
                     return user;
                 }
             }
@@ -68,11 +70,11 @@ namespace HumanCapitalManagementAPI.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
-new Claim("fullName", userInfo.Username.ToString()),
-new Claim("role",userInfo.Role),
-new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-};
+            new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
+            new Claim("fullName", userInfo.Username.ToString()),
+            new Claim("role",userInfo.Role),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
             var token = new JwtSecurityToken(
             issuer: _config.GetSection("Jwt:Issuer").Value,
             audience: _config.GetSection("Jwt:Audience").Value,

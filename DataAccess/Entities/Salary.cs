@@ -1,15 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace DataAccess.Entities
 {
     public class Salary
     {
-
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
@@ -37,5 +34,23 @@ namespace DataAccess.Entities
 
         public Employee Employee { get; set; }
 
+        // New fields added below
+
+        [Required]
+        [JsonPropertyName("month")]
+        [Range(1, 12)]
+        public int Month { get; set; }
+
+        [Required]
+        [JsonPropertyName("year")]
+        [Range(1, 9999)]
+        public int Year { get; set; }
+
+        [JsonPropertyName("createdAt")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime? UpdatedAt { get; set; }
+        [JsonPropertyName("notes")]
+        public string Notes { get; set; }
     }
 }

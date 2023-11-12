@@ -8,8 +8,8 @@ namespace HumanCapitalManagementAPI.Utility
     public class Policies
     {
         public const string Admin = "Admin";
-public const string User = "HR";
-public static AuthorizationPolicy AdminPolicy()
+        public const string User = "HR";
+        public static AuthorizationPolicy AdminPolicy()
         {
             return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(Admin).Build();
         }

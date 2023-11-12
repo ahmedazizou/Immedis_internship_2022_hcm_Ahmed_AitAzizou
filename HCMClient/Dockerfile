@@ -1,8 +1,11 @@
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
 WORKDIR /app
+COPY ../certs/aspnetapp.pfx /https/
 EXPOSE 37360
+EXPOSE 443
 
-ENV ASPNETCORE_URLS=http://+:37360
+ENV ASPNETCORE_URLS="https://+;http://+"
+ENV ASPNETCORE_HTTPS_PORT=443
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
