@@ -42,7 +42,13 @@ namespace HCMClient.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (HttpClient client = new HttpClient())
+
+
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+
+                using (HttpClient client = new HttpClient(handler))
                 {
                     client.BaseAddress = new Uri(_configuration.GetValue<string>("APIURL"));
                     var json = JsonSerializer.Serialize(user);

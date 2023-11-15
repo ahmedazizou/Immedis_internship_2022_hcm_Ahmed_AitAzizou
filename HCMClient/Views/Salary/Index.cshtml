@@ -1,4 +1,4 @@
-﻿@model List<Salary>;
+@model List<Salary>;
 @{
     ViewData["Title"] = "All Salaries";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,20 +6,20 @@
 
 @if (TempData["SuccessMessage"] != null)
 {
-            <script>
-                $(document).ready(function() {
-                    toastr.success('@TempData["SuccessMessage"]');
-                });
-            </script>
+                <script>
+                    $(document).ready(function() {
+                        toastr.success('@TempData["SuccessMessage"]');
+                    });
+                </script>
 }
 
 @if (TempData["ErrorMessage"] != null)
 {
-            <script>
-                $(document).ready(function() {
-                    toastr.error('@TempData["ErrorMessage"]');
-                });
-            </script>
+                <script>
+                    $(document).ready(function() {
+                        toastr.error('@TempData["ErrorMessage"]');
+                    });
+                </script>
 }
 <section class="content">
     <div class="container-fluid">
@@ -53,28 +53,28 @@
                                 {
                                     foreach (var item in Model)
                                     {
-                                                                                <tr>
-                                                                                    <td>@item.Id</td>
-                                                                                    <td>@item.EmployeeId</td>
-                                                                                    <td>@item.BaseSalary</td>
-                                                                                    <td>@item.Bonuses</td>
-                                                                                    <td>@item.Deductions</td>
-                                                                                    <td>@item.TotalSalary</td>
-                                                                                    <td>@item.Month</td>
-                                                                                    <td>@item.Year</td>
-                                                                                    <td>@item.Notes</td>
-                                                                                    <td>
-                                                                                        <a asp-action="Save" asp-controller="Salary" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-edit"></i></a>
-                                                                                        <a asp-action="Delete" asp-controller="Salary" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                                                                        </td>
-                                                                                </tr>
+                                                                                        <tr>
+                                                                                            <td>@item.Id</td>
+                                                                                            <td>@item.EmployeeId</td>
+                                                                                            <td>@item.BaseSalary</td>
+                                                                                            <td>@item.Bonuses</td>
+                                                                                            <td>@item.Deductions</td>
+                                                                                            <td>@item.TotalSalary</td>
+                                                                                            <td>@item.Month</td>
+                                                                                            <td>@item.Year</td>
+                                                                                            <td>@item.Notes</td>
+                                                                                            <td>
+                                                                                                <a asp-action="Save" asp-controller="Salary" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-edit"></i></a>
+                                                                                                <a asp-action="Delete" asp-controller="Salary" asp-route-Id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                                                                </td>
+                                                                                        </tr>
                                     }
                                 }
                                 else
                                 {
-                                                        <tr>
-                                                            <td colspan="7">No record found.</td>
-                                                        </tr>
+                                                            <tr>
+                                                                <td colspan="7">No record found.</td>
+                                                            </tr>
                                 }
                             </tbody>
                         </table>
@@ -108,4 +108,3 @@
         });
     });
 </script>
-

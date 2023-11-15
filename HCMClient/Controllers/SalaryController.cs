@@ -31,8 +31,14 @@ namespace HCMClient.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
+
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+
             var salaries = new List<Salary>();
-            using (HttpClient client = new HttpClient())
+
+            using (HttpClient client = new HttpClient(handler))
             {
                 client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
                 client.DefaultRequestHeaders.Authorization
@@ -62,12 +68,15 @@ namespace HCMClient.Controllers
             return View(salary);
         }
         [HttpPost]
-        [HttpPost]
         public async Task<IActionResult> Save(Salary salary, string returnUrl = "")
         {
             if (ModelState.IsValid)
             {
-                using (HttpClient client = new HttpClient())
+
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+                using (HttpClient client = new HttpClient(handler))
                 {
                     client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
                     client.DefaultRequestHeaders.Authorization
@@ -141,7 +150,11 @@ namespace HCMClient.Controllers
             }
             if (Id > 0)
             {
-                using (HttpClient client = new HttpClient())
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+
+                using (HttpClient client = new HttpClient(handler))
                 {
                     client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
                     client.DefaultRequestHeaders.Authorization

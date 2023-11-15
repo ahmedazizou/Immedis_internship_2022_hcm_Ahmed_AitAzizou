@@ -29,14 +29,20 @@ namespace HCMClient.Controllers
             config = configuration;
 
         }
+
+
         public async Task<IActionResult> Index()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("Token")))
             {
                 return RedirectToAction("Login", "Account");
             }
+
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
             var employees = new List<Employee>();
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(handler))
             {
                 client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
                 client.DefaultRequestHeaders.Authorization
@@ -74,7 +80,11 @@ namespace HCMClient.Controllers
 
             if (ModelState.IsValid)
             {
-                using (HttpClient client = new HttpClient())
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+
+                using (HttpClient client = new HttpClient(handler))
                 {
                     client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
                     client.DefaultRequestHeaders.Authorization
@@ -105,6 +115,7 @@ namespace HCMClient.Controllers
         }
         public async Task<IActionResult> Delete(int Id)
         {
+
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("Token")))
             {
                 return RedirectToAction("Login", "Account");
@@ -112,7 +123,11 @@ namespace HCMClient.Controllers
 
             if (Id > 0)
             {
-                using (HttpClient client = new HttpClient())
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+
+                using (HttpClient client = new HttpClient(handler))
                 {
                     client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
                     client.DefaultRequestHeaders.Authorization
@@ -141,7 +156,10 @@ namespace HCMClient.Controllers
 
             if (Id > 0)
             {
-                using (HttpClient client = new HttpClient())
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+                using (HttpClient client = new HttpClient(handler))
                 {
                     client.BaseAddress = new Uri(config.GetValue<string>("APIURL"));
                     client.DefaultRequestHeaders.Authorization
