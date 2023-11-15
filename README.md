@@ -7,27 +7,27 @@ Human Capital Management System is a web application designed to manage the esse
 
 ### User Authentication
 Handle user login and registration, allowing new users to sign up with roles such as admin or HR.
-![User Authentication](https://i.ibb.co/KDQ54KD/image-7.png)
+![User Authentication](https://camo.githubusercontent.com/aa780fb5989523eae96b70d0d308e5e55d8f2fcc122d54ff5d122a8a526510b0/68747470733a2f2f692e6962622e636f2f4b445135344b442f696d6167652d372e706e67)
 
 ### Dashboard
 An intuitive dashboard that welcomes users and provides quick navigation to various management features.
-![Dashboard](https://i.ibb.co/M8qMN68/image-8.png)
+![Dashboard](https://camo.githubusercontent.com/05cfc5ec95dc612b065e353e1a0a90bfc7c6934651fcc6cdea153c20c843b787/68747470733a2f2f692e6962622e636f2f4d38714d4e36382f696d6167652d382e706e67)
 
 ### User Management
 Create, edit, and manage user accounts, defining roles and access within the system.
-![User Management](https://i.ibb.co/HFcKJRq/image-9.png)
+![User Management](https://camo.githubusercontent.com/14107e1bc788342a14f8830fe44e655019f85e00d7779930ea19f74648ac06ae/68747470733a2f2f692e6962622e636f2f4846634b4a52712f696d6167652d392e706e67)
 
 ### Employee Management
 Manage detailed employee information, including contact details, department assignments, salaries, and more.
-![Employee Management](https://i.ibb.co/dGdWcGC/image-13.png)
+![Employee Management](https://camo.githubusercontent.com/c1e1366a5591c72f91d8dbbe4b2bc41ab203483b14915d7fad5c7402b2badef5/68747470733a2f2f692e6962622e636f2f644764576347432f696d6167652d31332e706e67)
 
 ### Department Management
 Add and manage department details to support the organizational structure.
-![Department Management](https://i.ibb.co/HPf7sBR/image-11.png)
+![Department Management](https://camo.githubusercontent.com/3da6ead983fb13e44e8fa27f18e3811024c36e90b241f022055e380c9577db65/68747470733a2f2f692e6962622e636f2f485066377342522f696d6167652d31312e706e67)
 
 ### Salary Management
 Assign and manage salaries, bonuses, and deductions for employees.
-![Salary Management](https://i.ibb.co/DCjLSPt/image-15.png)
+![Salary Management](https://camo.githubusercontent.com/9f4e1168837771df8d7272e5a72c24a27aecfe8c095997df48ed2958a6ae6c14/68747470733a2f2f692e6962622e636f2f44436a4c5350742f696d6167652d31352e706e67)
 
 
 ## Technology Stack
